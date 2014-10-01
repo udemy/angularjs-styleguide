@@ -102,9 +102,9 @@ Each file should be should define a separate module and include module dependenc
 ````javascript
 app/scripts/directives/my-directive.js
 
-define(['angular', 'app/scripts/services/myService'],     function (angular) {
+define(['angular', 'app/scripts/services/my-service'],     function (angular) {
   'use strict';
-  angular.module('myApp.directives.myDirective', ['myApp.services.myService'])
+  angular.module('myApp.directives.myDirective',['myApp.services.myService'])
     .directive('myDirective', function () {
       return {
         template: '<div></div>',
