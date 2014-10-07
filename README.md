@@ -97,39 +97,43 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 
 Encapsulate each file with Requirejs `define` statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name.
 
-```javascript
-/* app/scripts/my-feature/my-feature-directive.js */
 
-define(['angular', 'app/scripts/services/my-service'], function(angular) {
-    'use strict';
-    angular.module('myApp.my-feature.myFeatureDirective', ['myApp.services.myService'])
-        .directive('myFeatureDirective', myFeatureDirective);
-        
-    myFeatureDirective.$inject = ['myFeatureService']; 
-    
-    function myFeatureDirective(myFeatureService) {
-        return {
-            template: '<div></div>',
-            restrict: 'E',
-            link: function postLink(scope, element, attrs) {
-                element.text('this is the myDirective directive');
-            }
-        };
-    }
-});
 
-/* app/scripts/my-feature/my-feature-service.js */ 
+    ```javascript
+    // app/scripts/my-feature/my-feature-directive.js 
+	
+	define(['angular', 'app/scripts/services/my-service'], function(angular) {
+	    'use strict';
+	    angular.module('myApp.my-feature.myFeatureDirective', ['myApp.services.myService'])
+	        .directive('myFeatureDirective', myFeatureDirective);
+	        
+	    myFeatureDirective.$inject = ['myFeatureService']; 
+	    
+	    function myFeatureDirective(myFeatureService) {
+	        return {
+	            template: '<div></div>',
+	            restrict: 'E',
+	            link: function postLink(scope, element, attrs) {
+	                element.text('this is the myDirective directive');
+	            }
+	        };
+	    }
+	});
+    ```
+	
+    ```javascript
+    // app/scripts/my-feature/my-feature-service.js 
 
-define(['angular'], function(angular) {
-    'use strict';
-    angular.module('myApp.myFeature.myFeatureService', [])
-        .service('myFeatureService', myFeatureService);
-
-    function myFeatureService() {
-        // ...
-    }
-});
-```
+	define(['angular'], function(angular) {
+	    'use strict';
+	    angular.module('myApp.myFeature.myFeatureService', [])
+	        .service('myFeatureService', myFeatureService);
+	
+	    function myFeatureService() {
+	        // ...
+	    }
+	});
+    ```
 
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
 
@@ -727,8 +731,6 @@ define('app/scripts/my-feature/my-feature-directive', function() {
     ```
 
   - This way bindings are mirrored across the host object, primitive values cannot update alone using the revealing module pattern
-
-      ![Factories Using "Above the Fold"](https://raw.githubusercontent.com/johnpapa/angularjs-styleguide/master/assets/above-the-fold-2.png)
 
   - **Function Declarations to Hide Implementation Details**: Use function declarations to hide implementation details. Keep your acessible members of the factory up top. Point those to function declarations that appears later in the file. For more details see [this post](http://www.johnpapa.net/angular-function-declarations-function-expressions-and-readable-code).
 
