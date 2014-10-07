@@ -135,16 +135,16 @@ define(['angular'], function(angular) {
 
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
 
-	```javascript
-	define('app/scripts/my-feature/my-feature-directive', function() {
-	    'use strict'
-	    describe('myFeatureDiretive', function() {
-	        beforeEach(function() {
-	            module('myApp.myFeature.myFeatureDirective');
-	        });
-	    });
-	});
-	```
+```javascript
+define('app/scripts/my-feature/my-feature-directive', function() {
+    'use strict'
+    describe('myFeatureDiretive', function() {
+        beforeEach(function() {
+            module('myApp.myFeature.myFeatureDirective');
+        });
+    });
+});
+```
 
 ## IIFE
   - **IIFE**: Wrap AngularJS components in an Immediately Invoked Function Expression (IIFE). 
