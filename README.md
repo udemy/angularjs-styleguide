@@ -74,7 +74,7 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
     
     // someController.js
     angular
-      .module('app')
+      .module('app.someController', [])
       .controller('SomeController' , SomeController);
 
     function SomeController() { }
@@ -85,7 +85,7 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
     
     // someFactory.js
     angular
-      .module('app')
+      .module('app.someFactory', [])
       .factory('SomeFactory' , SomeFactory);
       
     function SomeFactory() { }
@@ -95,17 +95,17 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 
 ## Requirejs
 
-Encapsulate each file with Requirejs define statement and make sure all the dependencies are declared properly in the define statement as in the examples below. This approach is based on both Yeoman [generator-angular-require](https://github.com/aaronallport/generator-angular-require).
- 
-Each file should be should define a separate module and include module dependencies. We follow the conventions of using file-path as a module name.
+Encapsulate each file with Requirejs `define` statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name.
 
 ````javascript
-app/scripts/directives/my-directive.js
+app/scripts/my-feature/my-feature-directive.js
 
 define(['angular', 'app/scripts/services/my-service'],     function (angular) {
   'use strict';
-  angular.module('myApp.directives.myDirective',['myApp.services.myService'])
-    .directive('myDirective', function () {
+  angular.module('myApp.my-feature.myFeatureDirective',['myApp.services.myService'])
+    .directive('myDirective', myFeatureDirective);
+    
+function myFeatureDirective(){
       return {
         template: '<div></div>',
         restrict: 'E',
@@ -113,28 +113,30 @@ define(['angular', 'app/scripts/services/my-service'],     function (angular) {
           element.text('this is the myDirective directive');
         }
       };
-    });
+    }
   });
 
-app/scripts/services/my-service.js
+app/scripts/my-feature/my-feature-service.js
 
 define(['angular'], function (angular) {
   'use strict';
-  angular.module('myApp.services.myService', [])
-    .service('myService', function () {
+  angular.module('myApp.myFeature.myFeatureService', [])
+    .service('myService', myFeatureService);
+
+function myFeatureService() {
       // ...
-    });
+    }
 });
 ```
 
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
 
 ``` javascript
-define('app/scripts/directives/my-directive', function(){
+define('app/scripts/my-feature/my-feature-directive', function(){
   'use strict' 
-  describe('myDirective', function () {
+  describe('myFeatureDiretive', function () {
     beforeEach(function () {     
-      module('myApp.directives.myDirective');
+      module('myApp.myFeature.myFeatureDirective');
     });
   });
 });
