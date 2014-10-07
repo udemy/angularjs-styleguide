@@ -103,7 +103,7 @@ Encapsulate each file with Requirejs `define` statement and make sure all the de
 define(['angular', 'app/scripts/services/my-service'], function(angular) {
     'use strict';
     angular.module('myApp.my-feature.myFeatureDirective', ['myApp.services.myService'])
-        .directive('myDirective', myFeatureDirective);
+        .directive('myFeatureDirective', myFeatureDirective);
 
     function myFeatureDirective() {
         return {
@@ -121,7 +121,7 @@ define(['angular', 'app/scripts/services/my-service'], function(angular) {
 define(['angular'], function(angular) {
     'use strict';
     angular.module('myApp.myFeature.myFeatureService', [])
-        .service('myService', myFeatureService);
+        .service('myFeatureService', myFeatureService);
 
     function myFeatureService() {
         // ...
