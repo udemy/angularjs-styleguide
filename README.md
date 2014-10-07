@@ -97,48 +97,48 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 
 Encapsulate each file with Requirejs `define` statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name.
 
-````javascript
-app/scripts/my-feature/my-feature-directive.js
+```javascript
+/* app/scripts/my-feature/my-feature-directive.js */
 
-define(['angular', 'app/scripts/services/my-service'],     function (angular) {
-  'use strict';
-  angular.module('myApp.my-feature.myFeatureDirective',['myApp.services.myService'])
-    .directive('myDirective', myFeatureDirective);
-    
-function myFeatureDirective(){
-      return {
-        template: '<div></div>',
-        restrict: 'E',
-        link: function postLink(scope, element, attrs) {
-          element.text('this is the myDirective directive');
-        }
-      };
+define(['angular', 'app/scripts/services/my-service'], function(angular) {
+    'use strict';
+    angular.module('myApp.my-feature.myFeatureDirective', ['myApp.services.myService'])
+        .directive('myDirective', myFeatureDirective);
+
+    function myFeatureDirective() {
+        return {
+            template: '<div></div>',
+            restrict: 'E',
+            link: function postLink(scope, element, attrs) {
+                element.text('this is the myDirective directive');
+            }
+        };
     }
-  });
+});
 
-app/scripts/my-feature/my-feature-service.js
+/* app/scripts/my-feature/my-feature-service.js */ 
 
-define(['angular'], function (angular) {
-  'use strict';
-  angular.module('myApp.myFeature.myFeatureService', [])
-    .service('myService', myFeatureService);
+define(['angular'], function(angular) {
+    'use strict';
+    angular.module('myApp.myFeature.myFeatureService', [])
+        .service('myService', myFeatureService);
 
-function myFeatureService() {
-      // ...
+    function myFeatureService() {
+        // ...
     }
 });
 ```
 
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
 
-``` javascript
-define('app/scripts/my-feature/my-feature-directive', function(){
-  'use strict' 
-  describe('myFeatureDiretive', function () {
-    beforeEach(function () {     
-      module('myApp.myFeature.myFeatureDirective');
+```javascript
+define('app/scripts/my-feature/my-feature-directive', function() {
+    'use strict'
+    describe('myFeatureDiretive', function() {
+        beforeEach(function() {
+            module('myApp.myFeature.myFeatureDirective');
+        });
     });
-  });
 });
 ```
 
