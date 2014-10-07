@@ -12,6 +12,10 @@ Many of my styles have been from the many pair programming sessions [Ward Bell](
 ## See the Styles in a Sample App
 While this guide explains the *what*, *why* and *how*, I find it helpful to see them in practice. This guide is accompanied by a sample application that follows these styles and patterns. You can find the [sample application (named modular) here](https://github.com/johnpapa/ng-demos) in the `modular` folder. Feel free to grab it, clone it, or fork it. [Instructions on running it are in its readme](https://github.com/johnpapa/ng-demos/tree/master/modular).
 
+
+## For javascript style guide. 
+Please follow the [google style guide](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml). 
+
 ## Table of Contents
   1. [Single Responsibility](#single-responsibility)
   2. [Requirejs](#requirejs)
