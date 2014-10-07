@@ -1,7 +1,7 @@
 define(['angular'], ['./discussion-api'], function(angular) {
     'use strict';
 
-    angular.module('courseTakingApp.discussion.discussionForm',['courseTakingApp.discussion.discussionApi'])
+    angular.module('apps.courseTaking.discussion.discussionForm',['courseTakingApp.discussion.discussionApi'])
         .controller('DiscussionController',DiscussionController)
         .directive('discussionPane',discussionPaneDirective);
 

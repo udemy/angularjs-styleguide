@@ -1,9 +1,9 @@
-define(['angular', './discussion/discussion-module', './announcement/announcement-module'],
+define(['angular', './discussion/module', './announcement/module'],
   function(angular){
     'use strict';
 
-    angular.module('courseTakingApp', [
-      'courseTakingApp.announcement',
-      'courseTakingApp.discussion'
+    angular.module('apps.courseTaking', [
+      'apps.courseTaking.announcement',
+      'apps.courseTaking.discussion'
     ]);
   });

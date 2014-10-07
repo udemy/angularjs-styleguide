@@ -1,7 +1,7 @@
 define(['angular'], function (angular) {
     'use strict';
     angular
-        .module('courseLanding.discovery.discoveryDirective', [])
+        .module('apps.courseLanding.discovery.discoveryDirective', [])
         .directive('discovery', discoveryDirective);
 
     function discoveryDirective() {

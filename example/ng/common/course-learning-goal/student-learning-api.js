@@ -1,5 +1,5 @@
-define(['angular'], function(angular) /*invoke*/ {
-    'use strict';
+define(['angular'], function(angular){
+    "use strict";
 
     // StudentLearningGoalApi factory
     angular.module('common.courseLearningGoal.StudentLearningGoalApi')

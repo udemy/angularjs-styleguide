@@ -1,8 +1,8 @@
-define(['angular', './discovery/discovery-module'],
+define(['angular', './discovery/module'],
     function (angular) {
         'use strict';
 
-        angular.module('courseLandingApp', [
-            'courseLandingApp.discovery'
+        angular.module('apps.courseLanding', [
+            'apps.courseLanding.discovery'
         ]);
     });

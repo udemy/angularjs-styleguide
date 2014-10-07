@@ -1,5 +1,5 @@
 define(['angular'], function(angular) {
     'use strict';
 
-    angular.module('courseTakingApp.announcement.announcementCreation',[]);
+    angular.module('apps.courseTaking.announcement.announcementCreation',[]);
 });

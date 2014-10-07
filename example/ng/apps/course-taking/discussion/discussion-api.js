@@ -2,7 +2,7 @@ define(['angular'], function(angular) {
     "use strict";
 
   // StudentLearningGoalApi factory
-  angular.module('courseTakingApp.discussion.discussionApi')
+  angular.module('apps.courseTaking.discussion.discussionApi')
     .factory('Discussion', DiscussionApi);
 
   DiscussionApi.$inject = ['$http'];

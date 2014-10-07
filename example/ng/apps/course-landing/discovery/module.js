@@ -1,8 +1,4 @@
-define(['angular',
-        './discovery-directive',
-        './discovery-service'
-    ],
-
+define(['angular', './discovery-directive', './discovery-service'],
     function (angular) {
         'use strict';
 
@@ -11,5 +7,4 @@ define(['angular',
                 'courseLanding.discovery.discoveryDirective',
                 'courseLanding.discovery.discoveryService'
             ]);
-    }
-);
+    });

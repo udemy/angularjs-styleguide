@@ -1,7 +1,7 @@
 define(['angular'], ['./announcement-api'], function(angular) {
     'use strict';
 
-    angular.module('courseTakingApp.announcement.announcementForm',['courseTakingApp.announcement.announcementApi'])
+    angular.module('apps.courseTaking.announcement.announcementForm',['courseTakingApp.announcement.announcementApi'])
         .controller('AnnouncementController',AnnouncementController)
         .directive('announcementPane',announcementPaneDirective);
 

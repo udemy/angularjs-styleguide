@@ -1,6 +1,4 @@
-define([
-    'angular',
-    './course-learning-api'
+define([ 'angular', './course-learning-api'
 ], function (angular) {
     "use strict";
 

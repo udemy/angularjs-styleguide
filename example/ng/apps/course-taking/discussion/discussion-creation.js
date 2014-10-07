@@ -1,5 +1,5 @@
 define(['angular'], function(angular) {
     'use strict';
 
-    angular.module('courseTakingApp.discussion.discussionCreation',[]);
+    angular.module('apps.courseTaking.discussion.discussionCreation',[]);
 });
