@@ -96,9 +96,6 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 ## Requirejs
 
 Encapsulate each file with Requirejs `define` statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name.
-
-
-
     ```javascript
     // app/scripts/my-feature/my-feature-directive.js 
 	
@@ -137,16 +134,16 @@ Encapsulate each file with Requirejs `define` statement and make sure all the de
 
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
 
-```javascript
-define('app/scripts/my-feature/my-feature-directive', function() {
-    'use strict'
-    describe('myFeatureDiretive', function() {
-        beforeEach(function() {
-            module('myApp.myFeature.myFeatureDirective');
-        });
-    });
-});
-```
+	```javascript
+	define('app/scripts/my-feature/my-feature-directive', function() {
+	    'use strict'
+	    describe('myFeatureDiretive', function() {
+	        beforeEach(function() {
+	            module('myApp.myFeature.myFeatureDirective');
+	        });
+	    });
+	});
+	```
 
 ## IIFE
   - **IIFE**: Wrap AngularJS components in an Immediately Invoked Function Expression (IIFE). 
