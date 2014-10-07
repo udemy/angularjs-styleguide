@@ -104,8 +104,10 @@ define(['angular', 'app/scripts/services/my-service'], function(angular) {
     'use strict';
     angular.module('myApp.my-feature.myFeatureDirective', ['myApp.services.myService'])
         .directive('myFeatureDirective', myFeatureDirective);
-
-    function myFeatureDirective() {
+        
+    myFeatureDirective.$inject = ['myFeatureService']; 
+    
+    function myFeatureDirective(myFeatureService) {
         return {
             template: '<div></div>',
             restrict: 'E',
