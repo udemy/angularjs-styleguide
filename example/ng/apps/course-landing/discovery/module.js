@@ -1,10 +1,11 @@
 define(['angular', './discovery-directive', './discovery-service'],
-    function (angular) {
+    function(angular, discoveryDirectiveModule, discoveryServiceModule) {
         'use strict';
 
-        angular
+        return angular
             .module('courseLanding.discovery', [
-                'courseLanding.discovery.discoveryDirective',
-                'courseLanding.discovery.discoveryService'
+                discoveryDirectiveModule.name,
+                discoveryServiceModule.name
             ]);
-    });
+    }
+);

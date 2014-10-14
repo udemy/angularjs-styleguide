@@ -1,9 +1,10 @@
-define(['angular'], ['./announcement-api'], function(angular) {
+define(['angular'], ['./announcement-api'], function(angular, announcementApiModule) {
     'use strict';
 
-    angular.module('apps.courseTaking.announcement.announcementForm',['courseTakingApp.announcement.announcementApi'])
-        .controller('AnnouncementController',AnnouncementController)
-        .directive('announcementPane',announcementPaneDirective);
+    var module = angular.module('apps.courseTaking.announcement.announcementForm',
+        [announcementApiModule.name])
+        .controller('AnnouncementController', AnnouncementController)
+        .directive('announcementPane', announcementPaneDirective);
 
     AnnouncementController.$inject = ['$scope', 'Announcement'];
 
@@ -19,4 +20,6 @@ define(['angular'], ['./announcement-api'], function(angular) {
 
         return directive;
     }
+
+    return module;
 });

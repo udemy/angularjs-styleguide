@@ -1,10 +1,10 @@
-define(['angular'], function (angular) {
+define(['angular'], function(angular) {
     'use strict';
-    angular
+    var module = angular
         .module('apps.courseLanding.discovery.discoveryDirective', [])
         .directive('discovery', discoveryDirective);
 
-    function discoveryDirective() {
+    function discoveryDirective(){
         var directive = {
             link: link,
             templateUrl: './discovery.tpl.html',
@@ -16,4 +16,5 @@ define(['angular'], function (angular) {
             /* */
         }
     }
+    return module;
 });

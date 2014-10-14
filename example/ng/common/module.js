@@ -1,8 +1,9 @@
 define(['angular', './comment/module', './course-learning-goal/module'],
-    function (angular){
+    function(angular, commentModule, courseLearningModule) {
+
         "use strict";
-        angular.module('common', [
-            'common.comment',
-            'common.courseLearningGoal'
+        return angular.module('common', [
+            commentModule.name,
+            courseLearningModule.name
         ]);
     });
