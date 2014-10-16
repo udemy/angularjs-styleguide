@@ -1,9 +1,11 @@
-define(['angular', './discussion/module', './announcement/module'],
-  function(angular){
-    'use strict';
+define(['angular', './../common/module', './discussion/module', './announcement/module'],
+    function(angular, commonModule, discussionModule, announcementModule) {
+        'use strict';
 
-    angular.module('apps.courseTaking', [
-      'apps.courseTaking.announcement',
-      'apps.courseTaking.discussion'
-    ]);
-  });
+        angular.module('apps.courseTaking', [
+            commonModule.name,
+            discussionModule.name,
+            announcementModule.name
+        ]);
+    }
+);

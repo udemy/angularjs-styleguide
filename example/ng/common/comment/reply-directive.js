@@ -1,6 +1,6 @@
 define(['angular'], function (angular) {
     "use strict";
-    angular
+    var module = angular
         .module('common.comment.replyDirective', [])
         .directive('reply', replyDirective);
 
@@ -16,4 +16,5 @@ define(['angular'], function (angular) {
             /* */
         }
     }
+    return module;
 });

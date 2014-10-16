@@ -78,7 +78,7 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
     
     // someController.js
     angular
-      .module('app')
+      .module('app.someController', [])
       .controller('SomeController' , SomeController);
 
     function SomeController() { }
@@ -89,7 +89,7 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
     
     // someFactory.js
     angular
-      .module('app')
+      .module('app.someFactory', [])
       .factory('SomeFactory' , SomeFactory);
       
     function SomeFactory() { }
@@ -99,48 +99,54 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
 
 ## Requirejs
 
-Encapsulate each file with Requirejs define statement and make sure all the dependencies are declared properly in the define statement as in the examples below. This approach is based on both Yeoman [generator-angular-require](https://github.com/aaronallport/generator-angular-require).
- 
-Each file should be should define a separate module and include module dependencies. We follow the conventions of using file-path as a module name.
+Encapsulate each file with Requirejs `define` statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name.
 
-````javascript
-app/scripts/directives/my-directive.js
+```javascript
+// app/scripts/my-feature/my-feature-directive.js 
 
-define(['angular', 'app/scripts/services/my-service'],     function (angular) {
-  'use strict';
-  angular.module('myApp.directives.myDirective',['myApp.services.myService'])
-    .directive('myDirective', function () {
-      return {
-        template: '<div></div>',
-        restrict: 'E',
-        link: function postLink(scope, element, attrs) {
-          element.text('this is the myDirective directive');
-        }
-      };
-    });
-  });
+define(['angular', 'app/scripts/services/my-service'], function(angular) {
+    'use strict';
+    angular.module('myApp.my-feature.myFeatureDirective', ['myApp.services.myService'])
+        .directive('myFeatureDirective', myFeatureDirective);
+        
+    myFeatureDirective.$inject = ['myFeatureService']; 
+    
+    function myFeatureDirective(myFeatureService) {
+        return {
+            template: '<div></div>',
+            restrict: 'E',
+            link: function postLink(scope, element, attrs) {
+                element.text('this is the myDirective directive');
+            }
+        };
+    }
+});
+```
+	
+```javascript
+// app/scripts/my-feature/my-feature-service.js 
 
-app/scripts/services/my-service.js
+define(['angular'], function(angular) {
+    'use strict';
+    angular.module('myApp.myFeature.myFeatureService', [])
+        .service('myFeatureService', myFeatureService);
 
-define(['angular'], function (angular) {
-  'use strict';
-  angular.module('myApp.services.myService', [])
-    .service('myService', function () {
-      // ...
-    });
+    function myFeatureService() {
+        // ...
+    }
 });
 ```
 
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
 
-``` javascript
-define('app/scripts/directives/my-directive', function(){
-  'use strict' 
-  describe('myDirective', function () {
-    beforeEach(function () {     
-      module('myApp.directives.myDirective');
+```javascript
+define('app/scripts/my-feature/my-feature-directive', function() {
+    'use strict'
+    describe('myFeatureDiretive', function() {
+        beforeEach(function() {
+            module('myApp.myFeature.myFeatureDirective');
+        });
     });
-  });
 });
 ```
 
@@ -727,8 +733,6 @@ define('app/scripts/directives/my-directive', function(){
     ```
 
   - This way bindings are mirrored across the host object, primitive values cannot update alone using the revealing module pattern
-
-      ![Factories Using "Above the Fold"](https://raw.githubusercontent.com/johnpapa/angularjs-styleguide/master/assets/above-the-fold-2.png)
 
   - **Function Declarations to Hide Implementation Details**: Use function declarations to hide implementation details. Keep your acessible members of the factory up top. Point those to function declarations that appears later in the file. For more details see [this post](http://www.johnpapa.net/angular-function-declarations-function-expressions-and-readable-code).
 

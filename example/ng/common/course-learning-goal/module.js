@@ -1,9 +1,12 @@
-define(['angular', './learning-goal'], function(angular) {
-  'use strict'; 
-  angular
-    .module('common.courseLearningGoal', [
-      'common.courseLearningGoal.learningGoal',
-      'common.courseLearningGoal.courseLearningGoalApi',
-      'common.courseLearningGoal.studentLearningGoalApi'
-    ]);
-});
+define(['angular', './learning-goal', './student-learning-api', './course-learning-api'],
+
+    function(angular, learningGoalModule, studentLearningApiModule, courseLearningApiModule) {
+        'use strict';
+
+        return angular
+            .module('common.courseLearningGoal', [
+                learningGoalModule.name,
+                studentLearningApiModule.name,
+                courseLearningApiModule.name
+            ]);
+    });

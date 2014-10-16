@@ -1,7 +1,8 @@
-define(['angular', './announcement-creation', './announcement-form'], function(angular) {
-  'use strict';
-  angular
-    .module('apps.courseTaking.announcement',[
-      'apps.courseTaking.announcement.announcementForm',
-      'apps.courseTaking.announcement.announcementCreation']);
-});
+define(['angular', './announcement-creation', './announcement-form'],
+    function(angular, announcementCreationModule, announcementFormModule) {
+        'use strict';
+       return angular
+            .module('apps.courseTaking.announcement', [
+                announcementCreationModule.name,
+                announcementFormModule.name]);
+    });

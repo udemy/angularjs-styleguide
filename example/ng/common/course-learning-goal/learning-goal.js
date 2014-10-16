@@ -1,16 +1,17 @@
-define([ 'angular', './course-learning-api'
-], function (angular) {
-    "use strict";
+define([ 'angular', './student-learning-api', './course-learning-api'],
+    function(angular, studentLearningApiModule, courseLearningApiModule) {
+        "use strict";
 
-    angular
-        .module('common.courseLearningGoal.learningGoal', [
-            'common.courseLearningGoal.studentLearningGoalApi',
-            'common.courseLearningGoal.courseLearningGoalApi'
-        ])
-        .controller('LearningGoalController', LearningGoalController);
+        var module = angular
+            .module('common.courseLearningGoal.learningGoal', [
+                studentLearningApiModule.name,
+                courseLearningApiModule.name
+            ])
+            .controller('LearningGoalController', LearningGoalController);
 
-    LearningGoalController.$inject = ['$scope', 'CourseLearningGoal', 'StudentLearningGoal'];
+        LearningGoalController.$inject = ['$scope', 'CourseLearningGoal', 'StudentLearningGoal'];
 
-    function LearningGoalController($scope, CourseLearningGoal, StudentLearningGoal) {
-    }
-});
+        function LearningGoalController($scope, CourseLearningGoal, StudentLearningGoal){}
+
+        return module;
+    });

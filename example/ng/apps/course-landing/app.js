@@ -1,8 +1,8 @@
 define(['angular', './discovery/module'],
-    function (angular) {
+    function(angular, discoveryModule) {
         'use strict';
 
-        angular.module('apps.courseLanding', [
-            'apps.courseLanding.discovery'
+        return module = angular.module('apps.courseLanding', [
+            discoveryModule.name
         ]);
     });

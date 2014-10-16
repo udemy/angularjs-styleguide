@@ -1,6 +1,6 @@
 define(['angular'], function (angular) {
     'use strict';
-    angular.module('common.comment.replyService')
+   var module = angular.module('common.comment.replyService')
         .factory('ReplyService', ReplyService);
 
     function ReplyService() {
@@ -10,4 +10,5 @@ define(['angular'], function (angular) {
 
         function doesSomething(){}
     }
+    return module;
 });

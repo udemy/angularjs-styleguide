@@ -1,29 +1,31 @@
 define(['angular'], function(angular) {
     "use strict";
 
-  // StudentLearningGoalApi factory
-  angular.module('common.courseLearningGoal.courseLearningApi')
-    .factory('StudentLearningGoal', CourseLearningGoalApi);
+    // StudentLearningGoalApi factory
+    var module = angular.module('common.courseLearningGoal.courseLearningApi')
+        .factory('StudentLearningGoal', CourseLearningGoalApi);
 
-  CourseLearningGoalApi.$inject = ['$http'];
+    CourseLearningGoalApi.$inject = ['$http'];
 
-  function CourseLearningGoalApi($http) {
+    function CourseLearningGoalApi($http) {
 
-    return {
-      getGoals: getGoals
-    };
+        return {
+            getGoals: getGoals
+        };
 
-    function getGoals() {
-      return $http.get('/api/goals')
-        .then(getGoalsComplete)
-        .catch(getFailed);
+        function getGoals() {
+            return $http.get('/api/goals')
+                .then(getGoalsComplete)
+                .catch(getFailed);
+        }
+
+        function getGoalsComplete(response) {
+            return response.data.results;
+        }
+
+        function getFailed(error) {
+        }
     }
 
-    function getGoalsComplete(response) {
-      return response.data.results;
-    }
-
-    function getFailed(error) {
-    }
-  }
+    return module;
 });
