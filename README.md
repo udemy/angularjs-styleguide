@@ -210,8 +210,8 @@ define('app/scripts/my-feature/my-feature-directive', function() {
     ```javascript
     /* avoid */
     angular
-      .module('app')
-      .controller('Dashboard', function () { });
+      .module('app', [])
+      .controller('DashboardController', function () { });
       .factory('logger', function () { });
     ```
 
@@ -220,16 +220,16 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     // dashboard.js
     angular
-      .module('app')
-      .controller('Dashboard', Dashboard);
+      .module('app.dashboard', [])
+      .controller('DashboardController', DashboardController);
 
-    function Dashboard () { }
+    function DashboardController () { }
     ```
 
     ```javascript
     // logger.js
     angular
-      .module('app')
+      .module('app.logger', [])
       .factory('logger', logger);
 
     function logger () { }
@@ -262,14 +262,14 @@ define(["angular", "app/scripts/my-service"],
 
     ```html
     <!-- avoid -->
-    <div ng-controller="Customer">
+    <div ng-controller="CustomerController">
       {{ name }}
     </div>
     ```
 
     ```html
     <!-- recommended -->
-    <div ng-controller="Customer as customer">
+    <div ng-controller="CustomerController as customer">
       {{ customer.name }}
     </div>
     ```
@@ -284,7 +284,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* avoid */
-    function Customer ($scope) {
+    function CustomerController ($scope) {
       $scope.name = {};
       $scope.sendMessage = function () { };
     }
@@ -292,7 +292,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* recommended - but see next section */
-    function Customer () {
+    function CustomerController () {
       this.name = {};
       this.sendMessage = function () { };
     }
@@ -304,7 +304,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* avoid */
-    function Customer () {
+    function CustomerController () {
       this.name = {};
       this.sendMessage = function () { };
     }
@@ -312,7 +312,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* recommended */
-    function Customer () {
+    function CustomerController () {
       var vm = this;
       vm.name = {};
       vm.sendMessage = function () { };
@@ -343,7 +343,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* avoid */
-    function Sessions() {
+    function SessionsController() {
         var vm = this;
 
         vm.gotoSession = function() {
@@ -361,7 +361,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* recommended */
-    function Sessions() {
+    function SessionsController() {
         var vm = this;
 
         vm.gotoSession = gotoSession;
@@ -389,7 +389,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* avoid */
-    function Sessions(data) {
+    function SessionsController(data) {
         var vm = this;
 
         vm.gotoSession = gotoSession;
@@ -409,7 +409,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* recommended */
-    function Sessions(dataservice) {
+    function SessionsController(dataservice) {
         var vm = this;
 
         vm.gotoSession = gotoSession;
@@ -436,7 +436,7 @@ define(["angular", "app/scripts/my-service"],
      * avoid 
      * Using function expressions.
      */
-    function Avengers(dataservice, logger) {
+    function AvengersController(dataservice, logger) {
         var vm = this;
         vm.avengers = [];
         vm.title = 'Avengers';
@@ -469,7 +469,7 @@ define(["angular", "app/scripts/my-service"],
      * Using function declarations
      * and bindable members up top.
      */
-    function Avengers(dataservice, logger) {
+    function AvengersController(dataservice, logger) {
         var vm = this;
         vm.avengers = [];
         vm.getAvengers = getAvengers;
@@ -502,7 +502,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* avoid */
-    function Order ($http, $q) {
+    function OrderController ($http, $q) {
       var vm = this;
       vm.checkCredit = checkCredit;
       vm.total = 0;
@@ -519,7 +519,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```javascript
     /* recommended */
-    function Order (creditService) {
+    function OrderController (creditService) {
       var vm = this;
       vm.checkCredit = checkCredit;
       vm.total = 0;
@@ -554,7 +554,7 @@ define(["angular", "app/scripts/my-service"],
 
     ```html
     <!-- avengers.html -->
-    <div ng-controller="Avengers as vm">
+    <div ng-controller="AvengersController as vm">
     </div>
     ```
 
@@ -570,7 +570,7 @@ define(["angular", "app/scripts/my-service"],
       $routeProvider
         .when('/avengers', {
           templateUrl: 'avengers.html',
-          controller: 'Avengers',
+          controller: 'AvengersController',
           controllerAs: 'vm'
         });
     }
