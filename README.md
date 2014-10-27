@@ -145,7 +145,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
     });
 });
 ```
-
+**[Back to top](#requirejs)**
 ## Modules
 
   - **Definitions (aka Setters)**: Break your application to multiple modules. 
@@ -153,12 +153,48 @@ define('app/scripts/my-feature/my-feature-directive', function() {
   	- A module for each reusable component (especially directives and filters)
   	- And an application level module which depends on the above modules and contains any initialization code.
   
-	```javascript 
-	angular.module('xmpl.service', [])
+```javascript
 
-	.value('greeter', greeter)
+// app.js
+define(['angular', './xmpl/module'],
+	function(angular, xmpModule) {
+		angular
+			.module('xmpl', [
+				xmpModule.name
+			])
+			.run(function run(greeter, user) {
+				// This is effectively part of the main method initialization code
+				greeter.localize({
+					salutation: 'Bonjour'
+				});
+				user.load('World');
+			});
+	}
+);
+
+// ./xmpl/module.js
+define(['angular',
+		'./xmpl-service',
+		'./xmpl-directive',
+		'./xmpl-filter'
+	],
+	function(angular, xmplServiceModule, xmplDirectiveModule, xmplFilterModule) {
+		return angular.module('xmpl', [
+			xmplServiceModule.name,
+			xmplDirectiveModule.name,
+			xmplFilterModule.name
+		])
+	}
+);
+
+// ./xmp/xmp-service.js 
+define(['angular'], function() {
+
+	var module = angular
+		.module('xmpl.service', [])
+		.value('greeter', greeter)
 		.value('user', user);
-	
+
 	var user = {
 			load: function(name) {
 				this.name = name;
@@ -173,22 +209,20 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 				return this.salutation + ' ' + name + '!';
 			}
 		};
-	
-	angular.module('xmpl.directive', []);
-	
-	angular.module('xmpl.filter', []);
-	
-	angular
-	.module('xmpl', ['xmpl.service', 'xmpl.directive', 'xmpl.filter'])
-	.run(function run(greeter, user) {
-		// This is effectively part of the main method initialization code
-		greeter.localize({
-			salutation: 'Bonjour'
-		});
-		user.load('World');
-	});
-	
-	```
+	return module;
+});
+
+// ./xmp/xmp-directive.js 
+define(['angular'], function() {
+	return angular.module('xmpl.directive', []);
+});
+
+
+// ./xmp/xmp-module.js 
+define(['angular'], function() {
+	return angular.module('xmpl.filter', []);
+});
+```
 
   *Why?*: Easy to reuse component when they are separated. 
   
