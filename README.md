@@ -95,7 +95,7 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 
 ## Requirejs
 
-Encapsulate each file with Requirejs `define` statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name. 
+Encapsulate each file with Requirejs [`define`](http://requirejs.org/docs/api.html#define) statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name. 
 
 ```javascript
 // app/scripts/my-feature/my-feature-directive.js 
