@@ -432,9 +432,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
           /* */
         }
     ```
-
-      ![Controller Using "Above the Fold"](https://raw.githubusercontent.com/johnpapa/angularjs-styleguide/master/assets/above-the-fold-1.png)
-
+    
       - Note: If the function is a 1 liner it consider keeping it right up top, as long as readability is not affected.
 
     ```javascript
