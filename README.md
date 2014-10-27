@@ -187,7 +187,7 @@ define(['angular',
 	}
 );
 
-// ./xmp/xmp-service.js 
+// ./xmpl/xmpl-service.js 
 define(['angular'], function() {
 
 	var module = angular
@@ -212,13 +212,13 @@ define(['angular'], function() {
 	return module;
 });
 
-// ./xmp/xmp-directive.js 
+// ./xmpl/xmpl-directive.js 
 define(['angular'], function() {
 	return angular.module('xmpl.directive', []);
 });
 
 
-// ./xmp/xmp-module.js 
+// ./xmpl/xmpl-filter.js 
 define(['angular'], function() {
 	return angular.module('xmpl.filter', []);
 });
