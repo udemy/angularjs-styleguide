@@ -151,8 +151,8 @@ define('app/scripts/my-feature/my-feature-directive', function() {
   - **Definitions (aka Setters)**: Break your application to multiple modules. 
 	- A module for each feature
   	- A module for each reusable component (especially directives and filters)
-  	- And an application level module which depends on the above modules and contains any initialization code.
-  	- each feature shall have a folder and a module.js file that aggregates all the feature modules. This way only module.js file will be required to export from the outside. 
+  	- An application level module which depends on the above modules and contains any initialization code.
+  	- Each feature shall have a folder and a module.js file that aggregates all the feature modules. This way only module.js file will be required to export from the outside. 
 ```javascript
 
 // app.js
