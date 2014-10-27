@@ -14,8 +14,7 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 
 ## Table of Contents
   1. [Single Responsibility](#single-responsibility)
-  2. [Requirejs](#requirejs)
-  1. [IIFE](#iife)
+  1. [Requirejs](#requirejs)
   1. [Modules](#modules)
   1. [Controllers](#controllers)
   1. [Services](#services)
@@ -93,7 +92,7 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 
 **[Back to top](#table-of-contents)**
 
-## Requirejs
+## [Requirejs](http://requirejs.org/)
 
 Encapsulate each file with Requirejs [`define`](http://requirejs.org/docs/api.html#define) statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name. 
 
@@ -1152,7 +1151,7 @@ define(["angular", "app/scripts/my-service"],
       $routeProvider
         .when('/avengers', {
           templateUrl: 'avengers.html',
-          controller: 'Avengers',
+          controller: 'AvengersCtrl',
           controllerAs: 'vm',
           resolve: {
             moviesPrepService: function (movieService) {
@@ -1165,9 +1164,9 @@ define(["angular", "app/scripts/my-service"],
     // avengers.js
     angular
       .module('app')
-      .controller('Avengers', Avengers);
+      .controller('AvengersCtrl', AvengersCtrl);
 
-    function Avengers (moviesPrepService) {
+    function AvengersCtrl (moviesPrepService) {
       var vm = this;
       vm.movies = moviesPrepService.movies;
     }
