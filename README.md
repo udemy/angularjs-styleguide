@@ -95,14 +95,14 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 
 ## Requirejs
 
-Encapsulate each file with Requirejs `define` statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name.
+Encapsulate each file with Requirejs `define` statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name. 
 
 ```javascript
 // app/scripts/my-feature/my-feature-directive.js 
 
-define(['angular', 'app/scripts/services/my-service'], function(angular) {
+define(['angular', 'app/scripts/services/my-service'], function(angular, myServiceModule) {
     'use strict';
-    angular.module('myApp.my-feature.myFeatureDirective', ['myApp.services.myService'])
+    var module = angular.module('myApp.my-feature.myFeatureDirective', [myServiceModule.name])
         .directive('myFeatureDirective', myFeatureDirective);
         
     myFeatureDirective.$inject = ['myFeatureService']; 
@@ -116,6 +116,7 @@ define(['angular', 'app/scripts/services/my-service'], function(angular) {
             }
         };
     }
+    return module; 
 });
 ```
 	
@@ -124,15 +125,15 @@ define(['angular', 'app/scripts/services/my-service'], function(angular) {
 
 define(['angular'], function(angular) {
     'use strict';
-    angular.module('myApp.myFeature.myFeatureService', [])
+    var module = angular.module('myApp.myFeature.myFeatureService', [])
         .service('myFeatureService', myFeatureService);
 
     function myFeatureService() {
         // ...
     }
+return module; 
 });
 ```
-
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
 
 ```javascript
@@ -145,67 +146,6 @@ define('app/scripts/my-feature/my-feature-directive', function() {
     });
 });
 ```
-
-## IIFE
-  - **IIFE**: Wrap AngularJS components in an Immediately Invoked Function Expression (IIFE). 
-  
-  *Why?*: An IIFE removes variables from the global scope. This helps prevent variables and function declarations from living longer than expected in the global scope, which also helps avoid variable collisions.
-
-  *Why?*: When your code is minified and bundled into a single file for deployment to a production server, you could have collisions of variables and many global variables. An IIFE protects you against both of these by providing variable scope for each file.
-
-    ```javascript
-    /* avoid */
-    // logger.js
-    angular
-      .module('app')
-      .factory('logger', logger);
-
-    // logger function is added as a global variable  
-    function logger () { }
-
-    // storage.js
-    angular
-      .module('app')
-      .factory('storage', storage);
-
-    // storage function is added as a global variable  
-    function storage () { }
-    ```
-
-  
-    ```javascript
-    /**
-     * recommended 
-     *
-     * no globals are left behind 
-     */
-
-    // logger.js
-    (function () {
-      'use strict';
-      
-      angular
-        .module('app')
-        .factory('logger', logger);
-
-      function logger () { }
-    })();
-
-    // storage.js
-    (function () {
-      'use strict';
-
-      angular
-        .module('app')
-        .factory('storage', storage);
-
-      function storage () { }
-    })();
-    ```
-
-  - Note: For brevity only, the rest of the examples in this guide may omit the IIFE syntax. 
-
-**[Back to top](#table-of-contents)**
 
 ## Modules
 
@@ -295,6 +235,19 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     function logger () { }
     ```
+  - **Reference Module Name**:  Each require module should return an angular module instance so that module can be reference in the depedencies and the angular module name can be used directly. 
+  
+  *Why?* :  Avoids the usage of strings for angular module dependencies. If the module name changes the developer doesn't have to modify everywhere the module is referenced.
+
+```javascript
+define(["angular", "app/scripts/my-service"],
+	function(angular, myServiceModule) {
+		var module = angular.module('myApp.myFeature', [myServiceModule.name]);
+		....
+		return module;
+	}
+);
+```
 
 **[Back to top](#table-of-contents)**
 
