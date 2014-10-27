@@ -190,7 +190,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
     ```javascript
     /* recommended */
     angular
-      .module('app')
+      .module('app', [])
       .controller('SomeController' , SomeController);
     
     function SomeController() { }
