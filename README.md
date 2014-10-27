@@ -149,43 +149,46 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 ## Modules
 
   - **Definitions (aka Setters)**: Break your application to multiple modules. 
-  - A module for each feature
-  - A module for each reusable component (especially directives and filters)
-  - And an application level module which depends on the above modules and contains any initialization code.
+	 - A module for each feature
+  	- A module for each reusable component (especially directives and filters)
+  	- And an application level module which depends on the above modules and contains any initialization code.
   
-```javascript 
-angular.module('xmpl.service', [])
+	```javascript 
+	angular.module('xmpl.service', [])
 
-  .value('greeter', {
-    salutation: 'Hello',
-    localize: function(localization) {
-      this.salutation = localization.salutation;
-    },
-    greet: function(name) {
-      return this.salutation + ' ' + name + '!';
-    }
-  })
-
-  .value('user', {
-    load: function(name) {
-      this.name = name;
-    }
-  });
-
-angular.module('xmpl.directive', []);
-
-angular.module('xmpl.filter', []);
-
-angular.module('xmpl', ['xmpl.service', 'xmpl.directive', 'xmpl.filter'])
-
-  .run(function(greeter, user) {
-    // This is effectively part of the main method initialization code
-    greeter.localize({
-      salutation: 'Bonjour'
-    });
-    user.load('World');
-});
-```
+	.value('greeter', greeter)
+		.value('user', user);
+	
+	var user = {
+			load: function(name) {
+				this.name = name;
+			}
+		},
+		greeter = {
+			salutation: 'Hello',
+			localize: function(localization) {
+				this.salutation = localization.salutation;
+			},
+			greet: function(name) {
+				return this.salutation + ' ' + name + '!';
+			}
+		};
+	
+	angular.module('xmpl.directive', []);
+	
+	angular.module('xmpl.filter', []);
+	
+	angular
+	.module('xmpl', ['xmpl.service', 'xmpl.directive', 'xmpl.filter'])
+	.run(function run(greeter, user) {
+		// This is effectively part of the main method initialization code
+		greeter.localize({
+			salutation: 'Bonjour'
+		});
+		user.load('World');
+	});
+	
+	```
 
   *Why?*: Easy to reuse component when they are separated. 
   
