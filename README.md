@@ -149,7 +149,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 ## Modules
 
   - **Definitions (aka Setters)**: Break your application to multiple modules. 
-	 - A module for each feature
+	- A module for each feature
   	- A module for each reusable component (especially directives and filters)
   	- And an application level module which depends on the above modules and contains any initialization code.
   
@@ -278,7 +278,7 @@ define(["angular", "app/scripts/my-service"],
 );
 ```
 
-**[Back to top](#table-of-contents)**
+**[Back to top](#Modules)**
 
 ## Controllers
 
