@@ -2,7 +2,7 @@ define(['angular'], function(angular){
     "use strict";
 
     // StudentLearningGoalApi factory
-    angular.module('common.courseLearningGoal.StudentLearningGoalApi')
+    var module = angular.module('common.courseLearningGoal.StudentLearningGoalApi', [])
       .factory('StudentLearningGoal', StudentLearningGoalApi);
 
     StudentLearningGoalApi.$inject = ['$http'];
@@ -25,4 +25,6 @@ define(['angular'], function(angular){
       function getFailed(error) {
       }
     }
+
+    return module;
 });

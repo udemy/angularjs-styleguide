@@ -1,6 +1,6 @@
-define(['angular'], function (angular) {
+define(['angular'], function(angular) {
     'use strict';
-    angular.module('apps.courseLanding.discovery.DiscoveryService')
+    var module = angular.module('apps.courseLanding.discovery.DiscoveryService')
         .factory('DiscoveryService', DiscoveryService);
 
     function DiscoveryService() {
@@ -12,4 +12,6 @@ define(['angular'], function (angular) {
 
         }
     }
+
+    return module;
 });

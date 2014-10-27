@@ -1,40 +1,42 @@
 define(['angular'], function(angular) {
     "use strict";
 
-  // StudentLearningGoalApi factory
-  angular.module('apps.courseTaking.announcement.announcementApi')
-    .factory('Announcement', AnnouncementApi);
+    // StudentLearningGoalApi factory
+    var module = angular.module('apps.courseTaking.announcement.announcementApi')
+        .factory('Announcement', AnnouncementApi);
 
-  AnnouncementApi.$inject = ['$http'];
+    AnnouncementApi.$inject = ['$http'];
 
-  function AnnouncementApi($http) {
+    function AnnouncementApi($http) {
 
-    return {
-      getAnnouncements: getAnnouncements,
-      createAnnouncement: createAnnouncement
-    };
+        return {
+            getAnnouncements: getAnnouncements,
+            createAnnouncement: createAnnouncement
+        };
 
-    function getAnnouncements() {
-      return $http.get('/api/announcements')
-        .then(getAnnouncementsComplete)
-        .catch(getFailed);
+        function getAnnouncements() {
+            return $http.get('/api/announcements')
+                .then(getAnnouncementsComplete)
+                .catch(getFailed);
+        }
+
+        function getAnnouncementsComplete(response) {
+            return response.data.results;
+        }
+
+        function createAnnouncement(data) {
+            return $http.post('/api/announcements', data)
+                .then(createAnnouncementsComplete)
+                .catch(getFailed);
+        }
+
+        function createAnnouncementsComplete(response) {
+            return response.data.result;
+        }
+
+        function getFailed(error) {
+        }
     }
 
-    function getAnnouncementsComplete(response) {
-      return response.data.results;
-    }
-
-    function createAnnouncement(data) {
-        return $http.post('/api/announcements',data)
-          .then(createAnnouncementsComplete)
-          .catch(getFailed);
-    }
-
-    function createAnnouncementsComplete(response) {
-        return response.data.result;
-    }
-
-    function getFailed(error) {
-    }
-  }
+    return module;
 });

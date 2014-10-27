@@ -1,9 +1,10 @@
-define(['angular'], ['./discussion-api'], function(angular) {
+define(['angular'], ['./discussion-api'], function(angular, discussionApiModule) {
     'use strict';
 
-    angular.module('apps.courseTaking.discussion.discussionForm',['courseTakingApp.discussion.discussionApi'])
-        .controller('DiscussionController',DiscussionController)
-        .directive('discussionPane',discussionPaneDirective);
+    angular.module('apps.courseTaking.discussion.discussionForm',
+        [discussionApiModule.name])
+        .controller('DiscussionController', DiscussionController)
+        .directive('discussionPane', discussionPaneDirective);
 
     DiscussionController.$inject = ['$scope', 'Discussion'];
 
