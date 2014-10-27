@@ -131,7 +131,7 @@ define(['angular'], function(angular) {
     function myFeatureService() {
         // ...
     }
-return module; 
+    return module; 
 });
 ```
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
