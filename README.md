@@ -148,54 +148,47 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
 ## Modules
 
-  - **Definitions (aka Setters)**: Declare modules without a variable using the setter syntax. 
-
-  *Why?*: With 1 component per file, there is rarely a need to introduce a variable for the module.
+  - **Definitions (aka Setters)**: Break your application to multiple modules. 
+  - A module for each feature
+  - A module for each reusable component (especially directives and filters)
+  - And an application level module which depends on the above modules and contains any initialization code.
   
-    ```javascript
-    /* avoid */
-    var app = angular.module('app', [
-        'ngAnimate',
-        'ngRoute',
-        'app.shared',
-        'app.dashboard'
-    ]);
-    ```
+```javascript 
+angular.module('xmpl.service', [])
 
-  Instead use the simple setter syntax.
+  .value('greeter', {
+    salutation: 'Hello',
+    localize: function(localization) {
+      this.salutation = localization.salutation;
+    },
+    greet: function(name) {
+      return this.salutation + ' ' + name + '!';
+    }
+  })
 
-    ```javascript
-    /* recommended */
-    angular
-      .module('app', [
-        'ngAnimate',
-        'ngRoute',
-        'app.shared',
-        'app.dashboard'
-    ]);
-    ```
+  .value('user', {
+    load: function(name) {
+      this.name = name;
+    }
+  });
 
-  - **Getters**: When using a module, avoid using a variables and instead use   chaining with the getter syntax.
+angular.module('xmpl.directive', []);
 
-  *Why?* : This produces more readable code and avoids variables collisions or leaks.
+angular.module('xmpl.filter', []);
 
-    ```javascript
-    /* avoid */
-    var app = angular.module('app');
-    app.controller('SomeController' , SomeController);
-    
-    function SomeController() { }
-    ```
+angular.module('xmpl', ['xmpl.service', 'xmpl.directive', 'xmpl.filter'])
 
-    ```javascript
-    /* recommended */
-    angular
-      .module('app', [])
-      .controller('SomeController' , SomeController);
-    
-    function SomeController() { }
-    ```
+  .run(function(greeter, user) {
+    // This is effectively part of the main method initialization code
+    greeter.localize({
+      salutation: 'Bonjour'
+    });
+    user.load('World');
+});
+```
 
+  *Why?*: Easy to reuse component when they are separated. 
+  
   - **Setting vs Getting**: Only set once and get for all other instances.
   
   *Why?*: A module should only be created once, then retrieved from that point and after.
