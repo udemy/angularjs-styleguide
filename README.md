@@ -18,8 +18,7 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
 
 ## Table of Contents
   1. [Single Responsibility](#single-responsibility)
-  2. [Requirejs](#requirejs)
-  1. [IIFE](#iife)
+  1. [Requirejs](#requirejs)
   1. [Modules](#modules)
   1. [Controllers](#controllers)
   1. [Services](#services)
@@ -53,7 +52,7 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
 
     ```javascript
     /* avoid */
-    angular
+    var appModule = angular
       .module('app', ['ngRoute'])
       .controller('SomeController' , SomeController)
       .factory('SomeFactory' , SomeFactory);
@@ -61,6 +60,8 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
     function SomeController() { }
 
     function SomeFactory() { }
+
+    return appModule; 
     ```
     
   The same components are now separated into their own files.
@@ -69,7 +70,7 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
     /* recommended */
     
     // app.module.js
-    angular
+    var appModule = angular
       .module('app', ['ngRoute']);
     ```
 
@@ -77,36 +78,41 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
     /* recommended */
     
     // someController.js
-    angular
+    var appMOdule = angular
       .module('app.someController', [])
       .controller('SomeController' , SomeController);
 
     function SomeController() { }
+
+    return appModule; 
+
     ```
 
     ```javascript
     /* recommended */
     
     // someFactory.js
-    angular
+    var someModule = angular
       .module('app.someFactory', [])
       .factory('SomeFactory' , SomeFactory);
       
     function SomeFactory() { }
+
+    return someModule; 
     ```
 
 **[Back to top](#table-of-contents)**
 
-## Requirejs
+## [Requirejs](http://requirejs.org/)
 
-Encapsulate each file with Requirejs `define` statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name.
+Encapsulate each file with Requirejs [`define`](http://requirejs.org/docs/api.html#define) statement and make sure all the dependencies are declared properly as in the examples below. There will be a duality between requirejs and angular module system. Alls file dependencies should be declared in the define statement as well as angular module dependencies.  We follow the conventions of using file-path as a module name. 
 
 ```javascript
 // app/scripts/my-feature/my-feature-directive.js 
 
-define(['angular', 'app/scripts/services/my-service'], function(angular) {
+define(['angular', 'app/scripts/services/my-service'], function(angular, myServiceModule) {
     'use strict';
-    angular.module('myApp.my-feature.myFeatureDirective', ['myApp.services.myService'])
+    var myFeatureModule = angular.module('myApp.my-feature.myFeatureDirective', [myServiceModule.name])
         .directive('myFeatureDirective', myFeatureDirective);
         
     myFeatureDirective.$inject = ['myFeatureService']; 
@@ -120,6 +126,7 @@ define(['angular', 'app/scripts/services/my-service'], function(angular) {
             }
         };
     }
+    return myFeatureModule; 
 });
 ```
 	
@@ -128,15 +135,15 @@ define(['angular', 'app/scripts/services/my-service'], function(angular) {
 
 define(['angular'], function(angular) {
     'use strict';
-    angular.module('myApp.myFeature.myFeatureService', [])
+    var myFeatureModule = angular.module('myApp.myFeature.myFeatureService', [])
         .service('myFeatureService', myFeatureService);
 
     function myFeatureService() {
         // ...
     }
+    return myFeatureModule; 
 });
 ```
-
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
 
 ```javascript
@@ -149,118 +156,89 @@ define('app/scripts/my-feature/my-feature-directive', function() {
     });
 });
 ```
-
-## IIFE
-  - **IIFE**: Wrap AngularJS components in an Immediately Invoked Function Expression (IIFE). 
-  
-  *Why?*: An IIFE removes variables from the global scope. This helps prevent variables and function declarations from living longer than expected in the global scope, which also helps avoid variable collisions.
-
-  *Why?*: When your code is minified and bundled into a single file for deployment to a production server, you could have collisions of variables and many global variables. An IIFE protects you against both of these by providing variable scope for each file.
-
-    ```javascript
-    /* avoid */
-    // logger.js
-    angular
-      .module('app')
-      .factory('logger', logger);
-
-    // logger function is added as a global variable  
-    function logger () { }
-
-    // storage.js
-    angular
-      .module('app')
-      .factory('storage', storage);
-
-    // storage function is added as a global variable  
-    function storage () { }
-    ```
-
-  
-    ```javascript
-    /**
-     * recommended 
-     *
-     * no globals are left behind 
-     */
-
-    // logger.js
-    (function () {
-      'use strict';
-      
-      angular
-        .module('app')
-        .factory('logger', logger);
-
-      function logger () { }
-    })();
-
-    // storage.js
-    (function () {
-      'use strict';
-
-      angular
-        .module('app')
-        .factory('storage', storage);
-
-      function storage () { }
-    })();
-    ```
-
-  - Note: For brevity only, the rest of the examples in this guide may omit the IIFE syntax. 
-
-**[Back to top](#table-of-contents)**
-
+**[Back to top](#requirejs)**
 ## Modules
 
-  - **Definitions (aka Setters)**: Declare modules without a variable using the setter syntax. 
+  - **Definitions (aka Setters)**: Break your application to multiple modules. 
+	- A module for each feature
+  	- A module for each reusable component (especially directives and filters)
+  	- An application level module which depends on the above modules and contains any initialization code.
+  	- Each feature shall have a folder and a module.js file that aggregates all the feature modules. This way only module.js file will be required to export from the outside. 
+```javascript
 
-  *Why?*: With 1 component per file, there is rarely a need to introduce a variable for the module.
+// app.js
+define(['angular', './xmpl/module'],
+	function(angular, xmpModule) {
+		var xmplModule = angular
+			.module('xmpl', [
+				xmpModule.name
+			])
+			.run(function run(greeter, user) {
+				// This is effectively part of the main method initialization code
+				greeter.localize({
+					salutation: 'Bonjour'
+				});
+				user.load('World');
+			});
+
+      return xmpModule; 
+	}
+);
+
+// ./xmpl/module.js
+define(['angular',
+		'./xmpl-service',
+		'./xmpl-directive',
+		'./xmpl-filter'
+	],
+	function(angular, xmplServiceModule, xmplDirectiveModule, xmplFilterModule) {
+		return angular.module('xmpl', [
+			xmplServiceModule.name,
+			xmplDirectiveModule.name,
+			xmplFilterModule.name
+		])
+	}
+);
+
+// ./xmpl/xmpl-service.js 
+define(['angular'], function() {
+
+	var xmplServiceModule = angular
+		.module('xmpl.service', [])
+		.value('greeter', greeter)
+		.value('user', user);
+
+	var user = {
+			load: function(name) {
+				this.name = name;
+			}
+		},
+		greeter = {
+			salutation: 'Hello',
+			localize: function(localization) {
+				this.salutation = localization.salutation;
+			},
+			greet: function(name) {
+				return this.salutation + ' ' + name + '!';
+			}
+		};
+	return xmplServiceModule;
+});
+
+// ./xmpl/xmpl-directive.js 
+define(['angular'], function() {
+	return angular.module('xmpl.directive', []);
+});
+
+
+// ./xmpl/xmpl-filter.js 
+define(['angular'], function() {
+	return angular.module('xmpl.filter', []);
+});
+```
+
+  *Why?*: Easy to reuse component when they are separated. 
   
-    ```javascript
-    /* avoid */
-    var app = angular.module('app', [
-        'ngAnimate',
-        'ngRoute',
-        'app.shared',
-        'app.dashboard'
-    ]);
-    ```
-
-  Instead use the simple setter syntax.
-
-    ```javascript
-    /* recommended */
-    angular
-      .module('app', [
-        'ngAnimate',
-        'ngRoute',
-        'app.shared',
-        'app.dashboard'
-    ]);
-    ```
-
-  - **Getters**: When using a module, avoid using a variables and instead use   chaining with the getter syntax.
-
-  *Why?* : This produces more readable code and avoids variables collisions or leaks.
-
-    ```javascript
-    /* avoid */
-    var app = angular.module('app');
-    app.controller('SomeController' , SomeController);
-    
-    function SomeController() { }
-    ```
-
-    ```javascript
-    /* recommended */
-    angular
-      .module('app')
-      .controller('SomeController' , SomeController);
-    
-    function SomeController() { }
-    ```
-
   - **Setting vs Getting**: Only set once and get for all other instances.
   
   *Why?*: A module should only be created once, then retrieved from that point and after.
@@ -275,8 +253,8 @@ define('app/scripts/my-feature/my-feature-directive', function() {
     ```javascript
     /* avoid */
     angular
-      .module('app')
-      .controller('Dashboard', function () { });
+      .module('app', [])
+      .controller('DashboardController', function () { });
       .factory('logger', function () { });
     ```
 
@@ -284,23 +262,38 @@ define('app/scripts/my-feature/my-feature-directive', function() {
     /* recommended */
 
     // dashboard.js
-    angular
-      .module('app')
-      .controller('Dashboard', Dashboard);
+    var dashboardModule = angular
+      .module('app.dashboard', [])
+      .controller('DashboardController', DashboardController);
 
-    function Dashboard () { }
+    function DashboardController () { }
+
+    return dashboardModule; 
     ```
 
     ```javascript
     // logger.js
     angular
-      .module('app')
+      .module('app.logger', [])
       .factory('logger', logger);
 
     function logger () { }
     ```
+  - **Reference Module Name**:  Each require module should return an angular module instance so that module can be reference in the depedencies and the angular module name can be used directly. 
+  
+  *Why?* :  Avoids the usage of strings for angular module dependencies. If the module name changes the developer doesn't have to modify everywhere the module is referenced.
 
-**[Back to top](#table-of-contents)**
+```javascript
+define(["angular", "app/scripts/my-service"],
+	function(angular, myServiceModule) {
+		var myFeatureModule = angular.module('myApp.myFeature', [myServiceModule.name]);
+		....
+		return myFeatureModule;
+	}
+);
+```
+
+**[Back to top](#Modules)**
 
 ## Controllers
 
@@ -314,14 +307,14 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```html
     <!-- avoid -->
-    <div ng-controller="Customer">
+    <div ng-controller="CustomerController">
       {{ name }}
     </div>
     ```
 
     ```html
     <!-- recommended -->
-    <div ng-controller="Customer as customer">
+    <div ng-controller="CustomerController as customer">
       {{ customer.name }}
     </div>
     ```
@@ -336,7 +329,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```javascript
     /* avoid */
-    function Customer ($scope) {
+    function CustomerController ($scope) {
       $scope.name = {};
       $scope.sendMessage = function () { };
     }
@@ -344,7 +337,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```javascript
     /* recommended - but see next section */
-    function Customer () {
+    function CustomerController () {
       this.name = {};
       this.sendMessage = function () { };
     }
@@ -356,7 +349,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```javascript
     /* avoid */
-    function Customer () {
+    function CustomerController () {
       this.name = {};
       this.sendMessage = function () { };
     }
@@ -364,7 +357,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```javascript
     /* recommended */
-    function Customer () {
+    function CustomerController () {
       var vm = this;
       vm.name = {};
       vm.sendMessage = function () { };
@@ -395,7 +388,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```javascript
     /* avoid */
-    function Sessions() {
+    function SessionsController() {
         var vm = this;
 
         vm.gotoSession = function() {
@@ -413,7 +406,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```javascript
     /* recommended */
-    function Sessions() {
+    function SessionsController() {
         var vm = this;
 
         vm.gotoSession = gotoSession;
@@ -436,14 +429,12 @@ define('app/scripts/my-feature/my-feature-directive', function() {
           /* */
         }
     ```
-
-      ![Controller Using "Above the Fold"](https://raw.githubusercontent.com/johnpapa/angularjs-styleguide/master/assets/above-the-fold-1.png)
-
+    
       - Note: If the function is a 1 liner it consider keeping it right up top, as long as readability is not affected.
 
     ```javascript
     /* avoid */
-    function Sessions(data) {
+    function SessionsController(data) {
         var vm = this;
 
         vm.gotoSession = gotoSession;
@@ -463,7 +454,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```javascript
     /* recommended */
-    function Sessions(dataservice) {
+    function SessionsController(dataservice) {
         var vm = this;
 
         vm.gotoSession = gotoSession;
@@ -490,7 +481,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
      * avoid 
      * Using function expressions.
      */
-    function Avengers(dataservice, logger) {
+    function AvengersController(dataservice, logger) {
         var vm = this;
         vm.avengers = [];
         vm.title = 'Avengers';
@@ -523,7 +514,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
      * Using function declarations
      * and bindable members up top.
      */
-    function Avengers(dataservice, logger) {
+    function AvengersController(dataservice, logger) {
         var vm = this;
         vm.avengers = [];
         vm.getAvengers = getAvengers;
@@ -556,7 +547,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```javascript
     /* avoid */
-    function Order ($http, $q) {
+    function OrderController ($http, $q) {
       var vm = this;
       vm.checkCredit = checkCredit;
       vm.total = 0;
@@ -573,7 +564,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```javascript
     /* recommended */
-    function Order (creditService) {
+    function OrderController (creditService) {
       var vm = this;
       vm.checkCredit = checkCredit;
       vm.total = 0;
@@ -608,7 +599,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 
     ```html
     <!-- avengers.html -->
-    <div ng-controller="Avengers as vm">
+    <div ng-controller="AvengersController as vm">
     </div>
     ```
 
@@ -624,7 +615,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
       $routeProvider
         .when('/avengers', {
           templateUrl: 'avengers.html',
-          controller: 'Avengers',
+          controller: 'AvengersController',
           controllerAs: 'vm'
         });
     }
@@ -1205,7 +1196,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
       $routeProvider
         .when('/avengers', {
           templateUrl: 'avengers.html',
-          controller: 'Avengers',
+          controller: 'AvengersCtrl',
           controllerAs: 'vm',
           resolve: {
             moviesPrepService: function (movieService) {
@@ -1218,9 +1209,9 @@ define('app/scripts/my-feature/my-feature-directive', function() {
     // avengers.js
     angular
       .module('app')
-      .controller('Avengers', Avengers);
+      .controller('AvengersCtrl', AvengersCtrl);
 
-    function Avengers (moviesPrepService) {
+    function AvengersCtrl (moviesPrepService) {
       var vm = this;
       vm.movies = moviesPrepService.movies;
     }
