@@ -61,7 +61,6 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
 
     function SomeFactory() { }
 
-    return appModule; 
     ```
     
   The same components are now separated into their own files.
@@ -84,8 +83,6 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
 
     function SomeController() { }
 
-    return appModule; 
-
     ```
 
     ```javascript
@@ -98,7 +95,6 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
       
     function SomeFactory() { }
 
-    return someModule; 
     ```
 
 **[Back to top](#table-of-contents)**
