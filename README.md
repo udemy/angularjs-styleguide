@@ -48,7 +48,7 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 
     ```javascript
     /* avoid */
-    angular
+    var appModule = angular
       .module('app', ['ngRoute'])
       .controller('SomeController' , SomeController)
       .factory('SomeFactory' , SomeFactory);
@@ -56,6 +56,8 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
     function SomeController() { }
 
     function SomeFactory() { }
+
+    return appModule; 
     ```
     
   The same components are now separated into their own files.
@@ -64,7 +66,7 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
     /* recommended */
     
     // app.module.js
-    angular
+    var appModule = angular
       .module('app', ['ngRoute']);
     ```
 
@@ -72,22 +74,27 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
     /* recommended */
     
     // someController.js
-    angular
+    var appMOdule = angular
       .module('app.someController', [])
       .controller('SomeController' , SomeController);
 
     function SomeController() { }
+
+    return appModule; 
+
     ```
 
     ```javascript
     /* recommended */
     
     // someFactory.js
-    angular
+    var someModule = angular
       .module('app.someFactory', [])
       .factory('SomeFactory' , SomeFactory);
       
     function SomeFactory() { }
+
+    return someModule; 
     ```
 
 **[Back to top](#table-of-contents)**
@@ -101,7 +108,7 @@ Encapsulate each file with Requirejs [`define`](http://requirejs.org/docs/api.ht
 
 define(['angular', 'app/scripts/services/my-service'], function(angular, myServiceModule) {
     'use strict';
-    var module = angular.module('myApp.my-feature.myFeatureDirective', [myServiceModule.name])
+    var myFeatureModule = angular.module('myApp.my-feature.myFeatureDirective', [myServiceModule.name])
         .directive('myFeatureDirective', myFeatureDirective);
         
     myFeatureDirective.$inject = ['myFeatureService']; 
@@ -115,7 +122,7 @@ define(['angular', 'app/scripts/services/my-service'], function(angular, myServi
             }
         };
     }
-    return module; 
+    return myFeatureModule; 
 });
 ```
 	
@@ -124,13 +131,13 @@ define(['angular', 'app/scripts/services/my-service'], function(angular, myServi
 
 define(['angular'], function(angular) {
     'use strict';
-    var module = angular.module('myApp.myFeature.myFeatureService', [])
+    var myFeatureModule = angular.module('myApp.myFeature.myFeatureService', [])
         .service('myFeatureService', myFeatureService);
 
     function myFeatureService() {
         // ...
     }
-    return module; 
+    return myFeatureModule; 
 });
 ```
 When testing use require for the unit test file. In the test file require code with a define statement and use the angular `module` to load the angular module under test. 
@@ -158,7 +165,7 @@ define('app/scripts/my-feature/my-feature-directive', function() {
 // app.js
 define(['angular', './xmpl/module'],
 	function(angular, xmpModule) {
-		angular
+		var xmplModule = angular
 			.module('xmpl', [
 				xmpModule.name
 			])
@@ -169,6 +176,8 @@ define(['angular', './xmpl/module'],
 				});
 				user.load('World');
 			});
+
+      return xmpModule; 
 	}
 );
 
@@ -190,7 +199,7 @@ define(['angular',
 // ./xmpl/xmpl-service.js 
 define(['angular'], function() {
 
-	var module = angular
+	var xmplServiceModule = angular
 		.module('xmpl.service', [])
 		.value('greeter', greeter)
 		.value('user', user);
@@ -209,7 +218,7 @@ define(['angular'], function() {
 				return this.salutation + ' ' + name + '!';
 			}
 		};
-	return module;
+	return xmplServiceModule;
 });
 
 // ./xmpl/xmpl-directive.js 
@@ -249,11 +258,13 @@ define(['angular'], function() {
     /* recommended */
 
     // dashboard.js
-    angular
+    var dashboardModule = angular
       .module('app.dashboard', [])
       .controller('DashboardController', DashboardController);
 
     function DashboardController () { }
+
+    return dashboardModule; 
     ```
 
     ```javascript
@@ -271,9 +282,9 @@ define(['angular'], function() {
 ```javascript
 define(["angular", "app/scripts/my-service"],
 	function(angular, myServiceModule) {
-		var module = angular.module('myApp.myFeature', [myServiceModule.name]);
+		var myFeatureModule = angular.module('myApp.myFeature', [myServiceModule.name]);
 		....
-		return module;
+		return myFeatureModule;
 	}
 );
 ```
