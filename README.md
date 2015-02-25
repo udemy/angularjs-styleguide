@@ -294,8 +294,7 @@ define(["angular", "app/scripts/my-service"],
 
 ## Naming conventions for different providers 
 
-When naming services, factories, and providers, please use camelcase when the service, factory or provider returns 
-a single instance.
+When naming services, factories, and providers, please use `camelCasing` when the service, factory or provider returns an object literal or a function that is not a constructor. When a constructor function is return by the factory or provider please use `PascalCasing`. 
 
 ```javascript
 angular.module('myServiceModule', ['ngResource'])
