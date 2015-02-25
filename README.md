@@ -299,17 +299,17 @@ a single instance.
 
 ```javascript
 angular.module('myServiceModule', ['ngResource'])
-       .factory('notify', NotifyFactory)
+       .factory('notify', notifyFactory)
        .factory('User', UserFactory);
 
-NotifyFactory.$inject = ['$window']; 
+notifyFactory.$inject = ['$window']; 
 
-function NotifyFactory(win) {
+function notifyFactory($window) {
    var msgs = [];
    return function(msg) {
      msgs.push(msg);
      if (msgs.length == 3) {
-       win.alert(msgs.join("\n"));
+       $window.alert(msgs.join("\n"));
        msgs = [];
      }
    };
