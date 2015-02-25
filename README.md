@@ -320,8 +320,7 @@ function UserFactory($resouce){
 	return function User(){};
 }
 ```
-
-**[Back to top](#naming-conventions-for-different-providers)
+**[Back to top](#table-of-contents)**
 
 ## Controllers
 
