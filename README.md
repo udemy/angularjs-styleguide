@@ -20,6 +20,7 @@ Please follow the [google style guide](https://google-styleguide.googlecode.com/
   1. [Single Responsibility](#single-responsibility)
   1. [Requirejs](#requirejs)
   1. [Modules](#modules)
+  1. [Naming services, factories and providers](#naming-conventions-for-different-providers)
   1. [Controllers](#controllers)
   1. [Services](#services)
   1. [Factories](#factories)
@@ -240,7 +241,7 @@ define(['angular'], function() {
   *Why?*: A module should only be created once, then retrieved from that point and after.
       
       - Use `angular.module('app', []);` to set a module.
-      - Use  `angular.module('app');` to get a module. 
+      - Use `angular.module('app');` to get a module. 
 
   - **Named vs Anonymous Functions**: Use named functions instead of passing an anonymous function in as a callback. 
 
@@ -290,6 +291,38 @@ define(["angular", "app/scripts/my-service"],
 ```
 
 **[Back to top](#Modules)**
+
+## Naming conventions for different providers 
+
+When naming services, factories, and providers, please use camelcase when the service, factory or provider returns 
+a single instance.
+
+```javascript
+angular.module('myServiceModule', ['ngResource'])
+       .factory('notify', NotifyFactory)
+       .factory('User', UserFactory);
+
+NotifyFactory.$inject = ['$window']; 
+
+function NotifyFactory(win) {
+   var msgs = [];
+   return function(msg) {
+     msgs.push(msg);
+     if (msgs.length == 3) {
+       win.alert(msgs.join("\n"));
+       msgs = [];
+     }
+   };
+}
+
+UserFactory.$inject = ['$resource']; 
+
+function UserFactory($resouce){
+	return function User(){};
+}
+```
+
+**[Back to top](#naming-conventions-for-different-providers)
 
 ## Controllers
 
