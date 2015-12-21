@@ -407,7 +407,7 @@ function UserFactory($resouce){
     });
     ```
 
-  - **Bindable Members Up Top**: Place bindable members at the top of the controller, alphabetized, and not spread through the controller code.
+  - **[Bindable Members Up Top](#bindable-to-top)**: Place bindable members at the top of the controller, alphabetized, and not spread through the controller code.
   
     *Why?*: Placing bindable members at the top makes it easy to read and helps you instantly identify which members of the controller can be bound and used in the View. 
 
